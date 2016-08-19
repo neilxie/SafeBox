@@ -1,7 +1,8 @@
 package com.max.security.mvp.presenters;
 
 import android.os.Bundle;
-import android.view.View;
+
+import com.max.security.mvp.views.View;
 
 /**
  * Created by Max on 2016/8/11.

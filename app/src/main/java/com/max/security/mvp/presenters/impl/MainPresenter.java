@@ -1,18 +1,38 @@
 package com.max.security.mvp.presenters.impl;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 
+import com.max.security.R;
+import com.max.security.injector.ContextLifeCycle;
 import com.max.security.mvp.presenters.Presenter;
+import com.max.security.mvp.views.View;
+import com.max.security.mvp.views.impl.MainView;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by Max on 2016/8/11.
  */
 public class MainPresenter implements Presenter {
 
+    private MainView mainView;
+    private Context mContext;
+    private List<String> drawerList;
+    private int selectedPos;
+
+    @Inject
+    public MainPresenter(@ContextLifeCycle("Activity")Context context) {
+        mContext = context;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        mainView.initToolbar();
+        initDrawer();
     }
 
     @Override
@@ -42,6 +62,28 @@ public class MainPresenter implements Presenter {
 
     @Override
     public void attachView(View v) {
+        mainView = (MainView) v;
+    }
 
+    public void onDrawerItemSelect(int position) {
+        selectedPos = position;
+        mainView.closeDrawer();
+    }
+
+    public void onDrawerOpened(){
+        mainView.setToolbarTitle(mContext.getString(R.string.app_name));
+    }
+
+    public void onDrawerClosed(){
+        mainView.setToolbarTitle(drawerList.get(selectedPos));
+    }
+
+    private void initDrawer() {
+        drawerList = Arrays.asList(mContext.getResources()
+                .getStringArray(R.array.drawer_content));
+        mainView.initDrawerView(drawerList);
+        mainView.setDrawerItemChecked(0);
+        selectedPos = 0;
+        mainView.setToolbarTitle(drawerList.get(selectedPos));
     }
 }

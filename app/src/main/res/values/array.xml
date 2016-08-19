@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="drawer_content">
+        <item>图片加密</item>
+        <item>视频加密</item>
+        <item>音频加密</item>
+        <item>文件加密</item>
+    </array>
+</resources>
