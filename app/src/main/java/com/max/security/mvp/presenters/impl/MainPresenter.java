@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.max.security.R;
 import com.max.security.injector.ContextLifeCycle;
+import com.max.security.model.FileModel;
 import com.max.security.mvp.presenters.Presenter;
 import com.max.security.mvp.views.View;
 import com.max.security.mvp.views.impl.MainView;
@@ -22,7 +23,7 @@ public class MainPresenter implements Presenter {
     private MainView mainView;
     private Context mContext;
     private List<String> drawerList;
-    private int selectedPos;
+    private FileModel.FileType currentPageType = FileModel.FileType.IMAGE;
 
     @Inject
     public MainPresenter(@ContextLifeCycle("Activity")Context context) {
@@ -33,6 +34,7 @@ public class MainPresenter implements Presenter {
     public void onCreate(Bundle savedInstanceState) {
         mainView.initToolbar();
         initDrawer();
+        initLayoutManager();
     }
 
     @Override
@@ -66,7 +68,7 @@ public class MainPresenter implements Presenter {
     }
 
     public void onDrawerItemSelect(int position) {
-        selectedPos = position;
+        currentPageType = FileModel.FileType.mapValueToType(position);
         mainView.closeDrawer();
     }
 
@@ -75,15 +77,22 @@ public class MainPresenter implements Presenter {
     }
 
     public void onDrawerClosed(){
-        mainView.setToolbarTitle(drawerList.get(selectedPos));
+        mainView.setToolbarTitle(drawerList.get(currentPageType.getValue()));
     }
 
     private void initDrawer() {
         drawerList = Arrays.asList(mContext.getResources()
                 .getStringArray(R.array.drawer_content));
         mainView.initDrawerView(drawerList);
-        mainView.setDrawerItemChecked(0);
-        selectedPos = 0;
-        mainView.setToolbarTitle(drawerList.get(selectedPos));
+        mainView.setDrawerItemChecked(currentPageType.getValue());
+        mainView.setToolbarTitle(drawerList.get(currentPageType.getValue()));
+    }
+
+    public void OnNavigationOnClick(){
+        mainView.openOrCloseDrawer();
+    }
+
+    private void initLayoutManager() {
+
     }
 }

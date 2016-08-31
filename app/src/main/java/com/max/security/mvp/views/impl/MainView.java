@@ -1,5 +1,7 @@
 package com.max.security.mvp.views.impl;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.max.security.mvp.views.View;
 
 import java.util.List;
@@ -14,4 +16,6 @@ public interface MainView extends View {
     void setDrawerItemChecked(int position);
     void setToolbarTitle(String title);
     void closeDrawer();
+    void openOrCloseDrawer();
+    void setLayoutManager(RecyclerView.LayoutManager manager);
 }

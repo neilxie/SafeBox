@@ -1,10 +1,10 @@
 package com.max.security.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +21,7 @@ import com.max.security.injector.module.ActivityModule;
 import com.max.security.mvp.presenters.impl.MainPresenter;
 import com.max.security.mvp.views.impl.MainView;
 import com.max.security.utils.ToolbarUtils;
+import com.max.security.view.BetterFab;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.refresher)
-    SwipeRefreshLayout refreshLayout;
+//    @Bind(R.id.refresher)
+//    SwipeRefreshLayout refreshLayout;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.drawer_layout)
@@ -47,6 +48,8 @@ public class MainActivity extends BaseActivity implements MainView {
     CoordinatorLayout coordinatorLayout;
     @Bind(R.id.progress_wheel)
     ProgressWheel progressWheel;
+    @Bind(R.id.fab)
+    BetterFab fab;
     @Inject MainPresenter mainPresenter;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -132,5 +135,26 @@ public class MainActivity extends BaseActivity implements MainView {
         }
     }
 
+    @Override
+    public void openOrCloseDrawer() {
+        if (mDrawerLayout.isDrawerOpen(drawerRootView)) {
+            mDrawerLayout.closeDrawer(drawerRootView);
+        } else {
+            mDrawerLayout.openDrawer(drawerRootView);
+        }
+    }
 
+    @Override
+    public void setLayoutManager(RecyclerView.LayoutManager manager) {
+        recyclerView.setLayoutManager(manager);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+        if (toolbar != null){
+            toolbar.setNavigationOnClickListener((view) -> mainPresenter.OnNavigationOnClick());
+        }
+    }
 }
