@@ -34,7 +34,6 @@ public class MainPresenter implements Presenter {
     public void onCreate(Bundle savedInstanceState) {
         mainView.initToolbar();
         initDrawer();
-        initLayoutManager();
     }
 
     @Override
@@ -92,7 +91,4 @@ public class MainPresenter implements Presenter {
         mainView.openOrCloseDrawer();
     }
 
-    private void initLayoutManager() {
-
-    }
 }
