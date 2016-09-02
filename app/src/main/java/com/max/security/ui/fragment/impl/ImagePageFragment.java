@@ -6,11 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.max.security.R;
+import com.max.security.model.FileModel;
 import com.max.security.mvp.presenters.impl.ImagePagePresenter;
 import com.max.security.mvp.views.impl.ImagePageView;
 import com.max.security.view.BetterFab;
 import com.max.security.ui.fragment.BaseFragment;
 import com.pnikosis.materialishprogress.ProgressWheel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -60,5 +63,25 @@ public class ImagePageFragment extends BaseFragment implements ImagePageView {
     @Override
     protected void initialPresenter() {
         imagePresenter.attachView(this);
+    }
+
+    @Override
+    protected void initInject() {
+        fragmentComponent.inject(this);
+    }
+
+    @Override
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        recyclerView.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void showProgressWheel(boolean isShow) {
+        progressWheel.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void initRecyclerView(List<FileModel> files) {
+
     }
 }

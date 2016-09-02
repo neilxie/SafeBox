@@ -2,6 +2,8 @@ package com.max.security.mvp.presenters.impl;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.max.security.injector.ContextLifeCycle;
 import com.max.security.mvp.presenters.FragmentPresenter;
@@ -15,7 +17,7 @@ import javax.inject.Inject;
  */
 public class ImagePagePresenter implements FragmentPresenter {
 
-    private ImagePageView imageFgView;
+    private ImagePageView imagePageView;
     private Context mContext;
 
     @Inject
@@ -55,11 +57,20 @@ public class ImagePagePresenter implements FragmentPresenter {
 
     @Override
     public void attachView(View v) {
-        imageFgView = (ImagePageView) v;
+        imagePageView = (ImagePageView) v;
     }
 
     @Override
     public void onViewCreated() {
+        initLayoutManager();
+        loadData();
+    }
+
+    private void initLayoutManager() {
+        imagePageView.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
+    }
+
+    private void loadData() {
 
     }
 }

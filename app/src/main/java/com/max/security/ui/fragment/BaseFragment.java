@@ -1,5 +1,6 @@
 package com.max.security.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -7,6 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.max.security.injector.component.DaggerFragmentComponent;
+import com.max.security.injector.component.FragmentComponent;
+import com.max.security.injector.module.FragmentModule;
+import com.max.security.ui.BaseActivity;
 
 import butterknife.ButterKnife;
 
@@ -21,6 +27,15 @@ public abstract class BaseFragment extends Fragment {
     String mParam1;
     String mParam2;
 
+    protected FragmentComponent fragmentComponent;
+    protected BaseActivity mActivity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (BaseActivity) getActivity();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +45,13 @@ public abstract class BaseFragment extends Fragment {
             mParam2 = args.getString(ARG_PARAM2);
         }
 
+        fragmentComponent = DaggerFragmentComponent.builder()
+                .activityComponent(mActivity.getActivityComponent())
+                .fragmentModule(new FragmentModule(this))
+                .build();
+
+
+        initInject();
         initialPresenter();
     }
 
@@ -43,5 +65,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract @LayoutRes int getLayoutView();
     protected abstract void initialPresenter();
+    protected abstract void initInject();
 
 }
