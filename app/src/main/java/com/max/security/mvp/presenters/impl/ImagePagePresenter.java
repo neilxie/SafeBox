@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.max.security.greendao.FileModel;
 import com.max.security.injector.ContextLifeCycle;
-import com.max.security.model.FileModel;
+import com.max.security.model.FileModelType;
 import com.max.security.mvp.presenters.FragmentPresenter;
 import com.max.security.mvp.views.View;
 import com.max.security.mvp.views.impl.ImagePageView;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -80,7 +80,7 @@ public class ImagePagePresenter implements FragmentPresenter {
     }
 
     private void loadData() {
-        ObservableUtils.getFileModelByType(FileModel.FileType.IMAGE.getValue())
+        ObservableUtils.getFileModelByType(FileModelType.IMAGE.getValue())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<FileModel>>() {
@@ -103,6 +103,11 @@ public class ImagePagePresenter implements FragmentPresenter {
 
     private void initRecyclerView(List<FileModel> fileModels) {
         imagePageView.showProgressWheel(false);
-        imagePageView.initRecyclerView(fileModels);
+        if(fileModels == null || fileModels.isEmpty()) {
+            imagePageView.showEmpty(true);
+        } else {
+            imagePageView.showEmpty(false);
+            imagePageView.initRecyclerView(fileModels);
+        }
     }
 }

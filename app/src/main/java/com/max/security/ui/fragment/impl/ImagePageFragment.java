@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.max.security.R;
-import com.max.security.model.FileModel;
+import com.max.security.greendao.FileModel;
 import com.max.security.mvp.presenters.impl.ImagePagePresenter;
 import com.max.security.mvp.views.impl.ImagePageView;
 import com.max.security.view.BetterFab;
@@ -82,6 +82,11 @@ public class ImagePageFragment extends BaseFragment implements ImagePageView {
 
     @Override
     public void initRecyclerView(List<FileModel> files) {
+
+    }
+
+    @Override
+    public void showEmpty(boolean isShow) {
 
     }
 }

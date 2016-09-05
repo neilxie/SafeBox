@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.max.security.greendao.DaoMaster;
 import com.max.security.greendao.DaoSession;
-import com.max.security.greendao.FileModelsDao;
+import com.max.security.greendao.FileModelDao;
 import com.max.security.injector.component.AppComponent;
 import com.max.security.injector.component.DaggerAppComponent;
 import com.max.security.injector.module.AppModule;
@@ -57,8 +57,8 @@ public class App extends Application{
         QueryBuilder.LOG_VALUES = BuildConfig.DEBUG;
     }
 
-    public static FileModelsDao getFileModelDao() {
-        return mDaoSession.getFileModelsDao();
+    public static FileModelDao getFileModelDao() {
+        return mDaoSession.getFileModelDao();
     }
 
 }

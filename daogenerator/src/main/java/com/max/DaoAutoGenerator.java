@@ -31,12 +31,13 @@ public class DaoAutoGenerator {
 
     private static void createTable(Schema schema) {
 
-        Entity entity = schema.addEntity("FileModels");
+        Entity entity = schema.addEntity("FileModel");
 
         entity.addStringProperty("Id").notNull().primaryKey();
         entity.addStringProperty("FileName").notNull();
         entity.addStringProperty("FilePath").notNull();
         entity.addStringProperty("OriginPath").notNull();
         entity.addIntProperty("FileType").notNull();
+        entity.addLongProperty("CreateTime").notNull();
     }
 }

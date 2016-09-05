@@ -2,7 +2,7 @@ package com.max.security.mvp.views.impl;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.max.security.model.FileModel;
+import com.max.security.greendao.FileModel;
 import com.max.security.mvp.views.View;
 
 import java.util.List;
@@ -17,4 +17,6 @@ public interface ImagePageView extends View {
     void showProgressWheel(boolean isShow);
 
     void initRecyclerView(List<FileModel> files);
+
+    void showEmpty(boolean isShow);
 }
