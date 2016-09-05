@@ -7,5 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="change_theme_key">change_theme_key</string>
+
+    <string name="image_empty">没有隐私图片，请点击添加</string>
     
 </resources>

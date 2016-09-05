@@ -30,6 +30,8 @@ public class ImagePageFragment extends BaseFragment implements ImagePageView {
     ProgressWheel progressWheel;
     @Bind(R.id.fab)
     BetterFab fab;
+    @Bind(R.id.ll_empty)
+    View emptyLayout;
     @Inject
     ImagePagePresenter imagePresenter;
 
@@ -87,6 +89,7 @@ public class ImagePageFragment extends BaseFragment implements ImagePageView {
 
     @Override
     public void showEmpty(boolean isShow) {
-
+        emptyLayout.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(isShow ? View.GONE : View.VISIBLE);
     }
 }

@@ -84,16 +84,25 @@ public abstract class BaseListAdapter<E> extends BaseAdapter {
 				View inView = itemV.findViewById(key);
 				final onInternalClickListener<E> listener = canClickItem.get(key);
 				if (inView != null && listener != null) {
-					inView.setOnClickListener((view) ->
-									listener.OnClickListener(itemV, view, position,
-											valuesMap)
-					);
-
-					inView.setOnLongClickListener((view) -> {
-						listener.OnLongClickListener(itemV, view, position,
-								valuesMap);
-						return true;
+					inView.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if(listener != null) {
+								listener.OnClickListener(itemV, v, position, valuesMap);
+							}
+						}
 					});
+
+					inView.setOnLongClickListener(new View.OnLongClickListener() {
+						@Override
+						public boolean onLongClick(View v) {
+							if(listener != null) {
+								listener.OnLongClickListener(itemV, v, position, valuesMap);
+							}
+							return true;
+						}
+					});
+
 				}
 			}
 		}
