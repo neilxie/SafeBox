@@ -9,5 +9,7 @@
     <string name="change_theme_key">change_theme_key</string>
 
     <string name="image_empty">没有隐私图片，请点击添加</string>
+
+    <string name="description">Test for device admin</string>
     
 </resources>

@@ -1,5 +1,7 @@
 package com.max.security.mvp.views.impl;
 
+import android.support.v4.app.Fragment;
+
 import com.max.security.mvp.views.View;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface MainView extends View {
     void setToolbarTitle(String title);
     void closeDrawer();
     void openOrCloseDrawer();
+    void showFragment(Fragment fragment);
+    void hideFragment(Fragment fragment);
 }

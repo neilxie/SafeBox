@@ -24,6 +24,7 @@ public class App extends Application{
         super.onCreate();
         initializeInjector();
         setupDatabase();
+
     }
 
 
@@ -60,5 +61,6 @@ public class App extends Application{
     public static FileModelDao getFileModelDao() {
         return mDaoSession.getFileModelDao();
     }
+
 
 }

@@ -88,7 +88,7 @@ public abstract class BaseRecyclerViewAdapter<E> extends RecyclerView.Adapter<Re
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        addInternalClickListener(holder.itemView, position, mList.get(position));
     }
 
     @Override

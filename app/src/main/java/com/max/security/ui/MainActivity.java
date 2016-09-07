@@ -3,6 +3,9 @@ package com.max.security.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,10 +34,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-//    @Bind(R.id.refresher)
-//    SwipeRefreshLayout refreshLayout;
-//    @Bind(R.id.recyclerView)
-//    RecyclerView recyclerView;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.left_drawer_listview)
@@ -43,10 +42,6 @@ public class MainActivity extends BaseActivity implements MainView {
     View drawerRootView;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
-//    @Bind(R.id.progress_wheel)
-//    ProgressWheel progressWheel;
-//    @Bind(R.id.fab)
-//    BetterFab fab;
     @Inject MainPresenter mainPresenter;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -56,6 +51,7 @@ public class MainActivity extends BaseActivity implements MainView {
         super.onCreate(savedInstanceState);
         mainPresenter.attachView(this);
         mainPresenter.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -93,8 +89,12 @@ public class MainActivity extends BaseActivity implements MainView {
     public void initDrawerView(List<String> list) {
         SimpleListAdapter adapter = new DrawerListAdapter(this, list);
         mDrawerMenuListView.setAdapter(adapter);
-        mDrawerMenuListView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) ->
-                mainPresenter.onDrawerItemSelect(position));
+        mDrawerMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mainPresenter.onDrawerItemSelect(position);
+            }
+        });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -142,11 +142,38 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
+    public void showFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if(fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.container, fragment);
+        }
+        transaction.commit();
+
+    }
+
+    @Override
+    public void hideFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.hide(fragment);
+        transaction.commit();
+    }
+
+    @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
         if (toolbar != null){
-            toolbar.setNavigationOnClickListener((view) -> mainPresenter.OnNavigationOnClick());
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainPresenter.OnNavigationOnClick();
+                }
+            });
         }
     }
+
 }
