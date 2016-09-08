@@ -5,10 +5,10 @@ package com.max.security.model;
  */
 public enum FileModelType {
 
-    IMAGE(1),
-    VIDEO(2),
-    AUDIO(3),
-    FILE(4);
+    IMAGE(0),
+    VIDEO(1),
+    AUDIO(2),
+    FILE(3);
 
 
     private int mValue;

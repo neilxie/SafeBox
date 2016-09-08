@@ -3,6 +3,7 @@ package com.max.security.utils;
 import android.os.Environment;
 
 import com.max.security.greendao.FileModel;
+import com.max.security.model.FileModelType;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,12 +39,8 @@ public class FileUtils {
     private static final String VIDEO_FILE_PATH = LOCAL_PATH + File.separator + "videos";
     private static final String AUDIO_FILE_PATH = LOCAL_PATH + File.separator + "audios";
     private static final String PRIVATE_FILE_PATH = LOCAL_PATH + File.separator + "files";
-    private static final String DECRYPT_DIR = "decrypt";
 
-    public static String getDecryptFilePath(FileModel fileModel) {
-        String path = fileModel.getFilePath() + File.separator + DECRYPT_DIR + File.separator + fileModel.getFileName();
-        return path;
-    }
+    private static final String FILE_LOCK_SUFFIX = ".lock";
 
     /**
      * encrypt or decrypt file
@@ -127,5 +124,82 @@ public class FileUtils {
     public static boolean fileExists(String filePath) {
         File file = new File(filePath);
         return file.exists();
+    }
+
+    public static void lockFile(String fileFullPath, FileModelType type) {
+
+        File sourceFile = new File(fileFullPath);
+        if(!sourceFile.exists()) {
+            return;
+        }
+
+        String fileName = fileFullPath.substring(fileFullPath.lastIndexOf("/"), fileFullPath.length());
+        String lockDir = getLockFilePath(type);
+        File dir = new File(lockDir);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        String lockFullPath = lockDir + "." + fileName + FILE_LOCK_SUFFIX;
+        copyFile(fileFullPath, lockFullPath);
+        sourceFile.delete();
+    }
+
+    public static int copyFile(String source, String dest) {
+        InputStream fosfrom = null;
+        OutputStream fosto = null;
+        try {
+            fosfrom = new FileInputStream(source);
+            fosto = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int c = 0;
+            while ((c = fosfrom.read(buffer)) > 0) {
+                fosto.write(buffer, 0, c);
+            }
+
+            return 0;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(fosfrom != null) {
+                try {
+                    fosfrom.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(fosto != null) {
+                try {
+                    fosto.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private static String getLockFilePath(FileModelType type) {
+        String path = "";
+        switch (type) {
+            case IMAGE:
+                path = IMAGE_FILE_PATH;
+                break;
+            case VIDEO:
+                path = VIDEO_FILE_PATH;
+                break;
+            case AUDIO:
+                path = AUDIO_FILE_PATH;
+                break;
+            case FILE:
+                path = PRIVATE_FILE_PATH;
+                break;
+        }
+
+        return path;
     }
 }

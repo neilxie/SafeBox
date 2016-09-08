@@ -42,8 +42,8 @@ public class MainPresenter implements Presenter {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mainView.initToolbar();
-        initDrawer();
         initPage();
+        initDrawer();
     }
 
     @Override

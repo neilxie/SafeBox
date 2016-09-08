@@ -39,7 +39,7 @@ public class ImagePageAdapter extends BaseRecyclerViewAdapter<FileModel> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         ImagePageViewHolder imgHolder = (ImagePageViewHolder) holder;
-        imgHolder.showImage(FileUtils.getDecryptFilePath(mList.get(position)));
+        imgHolder.showImage(mList.get(position).getFilePath());
     }
 
     @Override
